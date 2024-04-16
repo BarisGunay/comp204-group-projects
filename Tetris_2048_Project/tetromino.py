@@ -78,6 +78,36 @@ class Tetromino:
       self.bottom_left_cell.y = Tetromino.grid_height - 1
       self.bottom_left_cell.x = random.randint(0, Tetromino.grid_width - n)
 
+      # A method for rotating this tetromino clockwise by 90 degrees
+   def rotate_clockwise(self, game_grid):
+      n = len(self.tile_matrix)  # n = number of rows = number of columns
+      # create a copy of the current tile matrix
+      new_tile_matrix = np.full((n, n), None)
+      # rotate the tile matrix by 90 degrees clockwise
+      for row in range(n):
+         for col in range(n):
+            new_tile_matrix[col][n - 1 - row] = self.tile_matrix[row][col]
+      # check if the rotated tetromino can fit in the game grid
+      if self.can_fit(new_tile_matrix, game_grid):
+         self.tile_matrix = new_tile_matrix  # update the tile matrix
+      return self.can_fit(new_tile_matrix, game_grid)  # return whether the rotation was successful
+
+   # A method for checking if a given tile matrix can fit in the game grid
+   def can_fit(self, tile_matrix, game_grid):
+      n = len(tile_matrix)  # n = number of rows = number of columns
+      for row in range(n):
+         for col in range(n):
+            # check if any cell of the rotated tile matrix overlaps with an
+            # occupied cell in the game grid
+            if tile_matrix[row][col] is not None:
+               position = self.get_cell_position(row, col)
+               if position.y < 0 or position.y >= Tetromino.grid_height or position.x < 0 or position.x >= Tetromino.grid_width:
+                  return False  # the rotated tetromino is out of bounds
+               if game_grid.is_occupied(position.y, position.x):
+                  return False  # the rotated tetromino overlaps with an occupied cell
+      return True  # the rotated tetromino fits in the game grid
+     
+      
    # A method that computes and returns the position of the cell in the tile
    # matrix specified by the given row and column indexes
    def get_cell_position(self, row, col):
