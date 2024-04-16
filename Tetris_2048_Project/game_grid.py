@@ -91,7 +91,19 @@ class GameGrid:
       if col < 0 or col >= self.grid_width:
          return False
       return True
-
+    # A method for clearing full lines in the game grid
+   def clear_full_lines(self):
+      rows_to_clear = []  # list to store the row indexes of full rows
+      for row in range(self.grid_height):
+         # check if all cells in the current row are occupied
+         if all(self.tile_matrix[row]):
+            rows_to_clear.append(row)  # add the index of the full row to the list
+      # remove the full rows from the grid
+      for row in rows_to_clear:
+         self.tile_matrix = np.delete(self.tile_matrix, row, axis=0)
+         # add a new empty row at the top of the grid
+         new_row = np.full((1, self.grid_width), None)
+         self.tile_matrix = np.concatenate((self.tile_matrix, new_row), axis=0)
    # A method that locks the tiles of a landed tetromino on the grid checking
    # if the game is over due to having any tile above the topmost grid row.
    # (This method returns True when the game is over and False otherwise.)
@@ -113,5 +125,7 @@ class GameGrid:
                # the game is over if any placed tile is above the game grid
                else:
                   self.game_over = True
+      # clear full lines in the game grid
+      self.clear_full_lines()
       # return the value of the game_over flag
       return self.game_over
