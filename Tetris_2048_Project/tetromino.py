@@ -71,7 +71,8 @@ class Tetromino:
       for i in range(len(occupied_cells)):
          col_index, row_index = occupied_cells[i][0], occupied_cells[i][1]
          # create a tile for each occupied cell of this tetromino
-         self.tile_matrix[row_index][col_index] = Tile()
+         number = random.randint(1,2) * 2
+         self.tile_matrix[row_index][col_index] = Tile(number)
       # initialize the position of this tetromino (as the bottom left cell in
       # the tile matrix) with a random horizontal position above the game grid
       self.bottom_left_cell = Point()

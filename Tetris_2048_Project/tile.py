@@ -11,9 +11,9 @@ class Tile:
    font_family, font_size = "Arial", 14
 
    # A constructor that creates a tile with 2 as the number on it
-   def __init__(self):
+   def __init__(self, number):
       # set the number on this tile
-      self.number = 2
+      self.number = number
       # set the colors of this tile
       self.background_color = Color(151, 178, 199)  # background (tile) color
       self.foreground_color = Color(0, 100, 200)  # foreground (number) color
