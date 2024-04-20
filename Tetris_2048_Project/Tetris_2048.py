@@ -39,6 +39,7 @@ def start():
 
    # the main game loop
    while True:
+      grid.merge_tiles()
       # check for any user interaction via the keyboard
       if stddraw.hasNextKeyTyped():  # check if the user has pressed a key
          key_typed = stddraw.nextKeyTyped()  # the most recently pressed key
@@ -68,7 +69,6 @@ def start():
       success = current_tetromino.move("down", grid)
       # lock the active tetromino onto the grid when it cannot go down anymore
       if not success:
-         grid.merge_tiles()
          # get the tile matrix of the tetromino without empty rows and columns
          # and the position of the bottom left cell in this matrix
          tiles, pos = current_tetromino.get_min_bounded_tile_matrix(True)
