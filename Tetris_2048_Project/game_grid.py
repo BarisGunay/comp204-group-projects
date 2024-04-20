@@ -2,6 +2,7 @@ import lib.stddraw as stddraw  # used for displaying the game grid
 from lib.color import Color  # used for coloring the game grid
 from point import Point  # used for tile positions
 import numpy as np  # fundamental Python module for scientific computing
+from tile import Tile
 
 # A class for modeling the game grid
 class GameGrid:
@@ -60,6 +61,12 @@ class GameGrid:
       for y in np.arange(start_y + 1, end_y, 1):  # horizontal inner lines
          stddraw.line(start_x, y, end_x, y)
       stddraw.setPenRadius()  # reset the pen radius to its default value
+
+   def get_tile_color(self, tile_number):
+      if tile_number in self.color_key:
+         return self.color_key[tile_number]
+      else:
+         return Color(255, 255, 255)
 
    # A method for drawing the boundaries around the game grid
    def draw_boundaries(self):
@@ -144,3 +151,4 @@ class GameGrid:
                   self.tile_matrix[row][col].number *= 2
                   # Remove the tile above
                   self.tile_matrix[row + 1][col] = None
+                  self.tile_matrix[row][col].change_color()
