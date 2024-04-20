@@ -17,10 +17,10 @@ class GameGrid:
       # the game_over flag shows whether the game is over or not
       self.game_over = False
       # set the color used for the empty grid cells
-      self.empty_cell_color = Color(42, 69, 99)
+      self.empty_cell_color = Color(206, 195, 181)
       # set the colors used for the grid lines and the grid boundaries
-      self.line_color = Color(0, 100, 200)
-      self.boundary_color = Color(0, 100, 200)
+      self.line_color = Color(185,171,158)
+      self.boundary_color = Color(132, 122, 113)
       # thickness values used for the grid lines and the grid boundaries
       self.line_thickness = 0.002
       self.box_thickness = 10 * self.line_thickness
