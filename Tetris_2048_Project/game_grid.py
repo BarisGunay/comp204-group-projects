@@ -6,10 +6,13 @@ import numpy as np  # fundamental Python module for scientific computing
 # A class for modeling the game grid
 class GameGrid:
    # A constructor for creating the game grid based on the given arguments
-   def __init__(self, grid_h, grid_w):
+   def __init__(self, grid_h, grid_w, right_panel_w):
       # set the dimensions of the game grid as the given arguments
       self.grid_height = grid_h
       self.grid_width = grid_w
+
+      self.right_panel_width = right_panel_w
+
       # create a tile matrix to store the tiles locked on the game grid
       self.tile_matrix = np.full((grid_h, grid_w), None)
       # create the tetromino that is currently being moved on the game grid
@@ -34,6 +37,11 @@ class GameGrid:
       stddraw.clear(self.empty_cell_color)
       # draw the game grid
       self.draw_grid()
+
+      self.draw_right_panel()
+
+      self.draw_score()
+
       # draw the current/active tetromino if it is not None
       # (the case when the game grid is updated)
       if self.current_tetromino is not None:
@@ -42,6 +50,38 @@ class GameGrid:
       self.draw_boundaries()
       # show the resulting drawing with a pause duration = 250 ms
       stddraw.show(250)
+
+   def draw_score(self):
+      # Set the color for the score display
+      stddraw.setPenColor(Color(0,0,0))
+      # Set the font size for the score display
+      stddraw.setFontSize(24)
+      # Draw the score on the right panel
+      stddraw.text(self.grid_width + self.right_panel_width // 2, self.grid_height -3, "Score: ")
+      # Draw the actual score value below the "Score: " text
+      stddraw.text(self.grid_width + self.right_panel_width // 2, self.grid_height -4, str(self.score))
+
+
+   def update_score(self, points):
+      self.score += points
+
+
+   def draw_right_panel(self):
+      # Set the pen color and thickness for the right-side panel
+      stddraw.setPenColor(self.line_color)
+      stddraw.setPenRadius(self.line_thickness)
+
+      # Culculate the starting and ending coodinates of the right-side panel
+      start_x = self.grid_width
+      end_x = start_x + self.right_panel_width
+      start_y, end_y = -0.5, self.grid_height - 0.5
+
+      # Draw the right-side panel as a rectangle
+      stddraw.rectangle(start_x, start_y, self.right_panel_width, self.grid_height)
+      # Reset the pen radius to its default value
+      stddraw.setPenRadius()
+
+
 
    # A method for drawing the cells and the lines of the game grid
    def draw_grid(self):
