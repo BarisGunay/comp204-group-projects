@@ -10,7 +10,20 @@ class Tile:
    boundary_thickness = 0.004
    # font family and font size used for displaying the tile number
    font_family, font_size = "Arial", 14
-
+   color_key = {
+         2: Color(238, 228, 218),   # Skin color
+         4: Color(236, 224, 199),   # Shade of red
+         8: Color(243, 177, 120),   # Shade of red
+         16: Color(244, 150, 100),  # Shade of red
+         32: Color(249, 123, 98),    # Shade of red
+         64: Color(237, 97, 86),
+         128: Color(250, 69, 56),
+         256: Color(255, 60, 48),
+         512: Color(255, 90, 11),
+         1024: Color(233, 103, 189),
+         2048: Color(233, 149, 112),    # Shade of red
+         4096: Color(0, 0, 0)       # Black
+      }
    # A constructor that creates a tile with 2 as the number on it
    def __init__(self):
       # set the number on this tile
@@ -25,6 +38,14 @@ class Tile:
       elif self.number == 2: 
          self.background_color = Color(238,228,218)   
          # light color of the box color if the number is 2 
+      self.change_color()  
+      
+      
+   def change_color(self):
+      if self.number in self.color_key:
+         self.background_color = self.color_key[self.number]
+      else:
+         self.background_color = Color(238,228,218)
    # A method for drawing this tile at a given position with a given length
    def draw(self, position, length=1):  # length defaults to 1
       # draw the tile as a filled square

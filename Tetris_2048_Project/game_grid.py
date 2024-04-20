@@ -123,6 +123,7 @@ class GameGrid:
                      if current_tile.number == self.tile_matrix[row + 1][col].number:
                         current_tile.number *= 2
                         self.tile_matrix[row + 1][col] = None
+                        self.tile_matrix[row ][col].change_color()
                         merged = True
                   if row + 2 < self.grid_height and self.tile_matrix[row + 2][col] is not None:
                      if self.tile_matrix[row + 1][col] == None: 
@@ -154,7 +155,6 @@ class GameGrid:
                # the game is over if any placed tile is above the game grid
                else:
                   self.game_over = True
-      
       # clear full lines in the game grid
       self.clear_full_lines()
       # return the value of the game_over flag
