@@ -236,3 +236,10 @@ class Tetromino:
                   break  # end the inner for loop
       # if this method does not end by returning False before this line
       return True  # this tetromino can be moved in the given direction
+
+   def victimize_tiles(self):
+      n = len(self.tile_matrix)
+      for col in range(n):
+         for row in range(n):
+            if not self.tile_matrix[row][col].is_merge_doer:
+               self.tile_matrix[row][col].is_merge_victim = True

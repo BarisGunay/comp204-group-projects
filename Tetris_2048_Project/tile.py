@@ -13,6 +13,10 @@ class Tile:
 
    # A constructor that creates a tile with 2 as the number on it
    def __init__(self):
+      self.is_merge_victim = False # if merge victim, tile shall fall until touching another or border
+      self.is_merge_doer = False # if merge doer, tile shall delete tile below, then keep falling until touching another or border
+      self.pos_y = 0
+      self.pos_x = 0
       # set the number on this tile
       self.number = random.choice([2, 4]) #choose randomly between 2 and 4
       # set the colors of this tile
@@ -26,6 +30,7 @@ class Tile:
          self.background_color = Color(238,228,218)   
          # light color of the box color if the number is 2 
    # A method for drawing this tile at a given position with a given length
+
    def draw(self, position, length=1):  # length defaults to 1
       # draw the tile as a filled square
       stddraw.setPenColor(self.background_color)
@@ -40,3 +45,19 @@ class Tile:
       stddraw.setFontFamily(Tile.font_family)
       stddraw.setFontSize(Tile.font_size)
       stddraw.text(position.x, position.y, str(self.number))
+
+   # A method for moving this tetromino in a given direction by 1 on the grid
+   def fall(self, game_grid):
+         while self.can_fall(game_grid):
+            self.pos_y -= 1
+
+   def can_fall(self, game_grid):
+      # if the tile hit border
+      if self.y == 0:
+         return False  # this tile cannot be moved down
+      # if the grid cell below any bottommost tile is occupied
+      if game_grid.is_occupied(self.pos_y - 1, self.pos_x):
+         return False  # this tile cannot be moved down
+         # as the bottommost tile of the current row is checked
+      # if this method does not end by returning False before this line
+      return True  # this tile can be moved in the given direction

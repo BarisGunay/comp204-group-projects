@@ -129,3 +129,7 @@ class GameGrid:
       self.clear_full_lines()
       # return the value of the game_over flag
       return self.game_over
+
+#   def merge_tiles(self):
+      # scan the grid
+      # find who should merge

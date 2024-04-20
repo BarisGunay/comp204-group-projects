@@ -80,6 +80,7 @@ def start():
          # by using the create_tetromino function defined below
          current_tetromino = create_tetromino()
          grid.current_tetromino = current_tetromino
+         # merge loop # while merge_tiles
 
       # display the game grid with the current tetromino
       grid.display()
