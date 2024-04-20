@@ -39,7 +39,6 @@ def start():
 
    # the main game loop
    while True:
-      grid.merge_tiles()
       # check for any user interaction via the keyboard
       if stddraw.hasNextKeyTyped():  # check if the user has pressed a key
          key_typed = stddraw.nextKeyTyped()  # the most recently pressed key
