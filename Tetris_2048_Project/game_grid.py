@@ -38,7 +38,7 @@ class GameGrid:
       # draw a box around the game grid
       self.draw_boundaries()
       # show the resulting drawing with a pause duration = 250 ms
-      stddraw.show(250)
+      stddraw.show(500)
 
    # A method for drawing the cells and the lines of the game grid
    def draw_grid(self):
@@ -104,6 +104,35 @@ class GameGrid:
          # add a new empty row at the top of the grid
          new_row = np.full((1, self.grid_width), None)
          self.tile_matrix = np.concatenate((self.tile_matrix, new_row), axis=0)
+         
+     #A method for merging adjacent tiles with the same value    
+   def merge_tiles(self):
+      merged = True
+      while merged:
+         merged = False
+    # Iterate over each cell in the grid
+         for row in range(self.grid_height):
+            for col in range(self.grid_width):
+                  current_tile = self.tile_matrix[row][col]
+               # Skip empty cells
+                  if current_tile is None:
+                     continue
+            # Check if there is a neighboring tile with the same value
+            # and merge them
+                  if row + 1 < self.grid_height and self.tile_matrix[row + 1][col] is not None:
+                     if current_tile.number == self.tile_matrix[row + 1][col].number:
+                        current_tile.number *= 2
+                        self.tile_matrix[row + 1][col] = None
+                        merged = True
+                  if row + 2 < self.grid_height and self.tile_matrix[row + 2][col] is not None:
+                     if self.tile_matrix[row + 1][col] == None: 
+                        self.tile_matrix[row + 1][col] = self.tile_matrix[row + 2][col]
+                        self.tile_matrix[row + 2][col] = None
+                  if row + 3 < self.grid_height and self.tile_matrix[row + 3][col] is not None:
+                     if self.tile_matrix[row + 2][col] == None: 
+                        self.tile_matrix[row + 2][col] = self.tile_matrix[row + 3][col]
+                        self.tile_matrix[row + 3][col] = None  
+                                                          
    # A method that locks the tiles of a landed tetromino on the grid checking
    # if the game is over due to having any tile above the topmost grid row.
    # (This method returns True when the game is over and False otherwise.)
@@ -125,6 +154,7 @@ class GameGrid:
                # the game is over if any placed tile is above the game grid
                else:
                   self.game_over = True
+      
       # clear full lines in the game grid
       self.clear_full_lines()
       # return the value of the game_over flag
