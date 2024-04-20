@@ -1,6 +1,7 @@
 import random
 import lib.stddraw as stddraw  # used for drawing the tiles to display them
 from lib.color import Color  # used for coloring the tiles
+from point import Point
 
 # A class for modeling numbered tiles as in 2048
 class Tile:
@@ -15,8 +16,7 @@ class Tile:
    def __init__(self):
       self.is_merge_victim = False # if merge victim, tile shall fall until touching another or border
       self.is_merge_doer = False # if merge doer, tile shall delete tile below, then keep falling until touching another or border
-      self.pos_y = 0
-      self.pos_x = 0
+      self.position = Point(0,0)
       # set the number on this tile
       self.number = random.choice([2, 4]) #choose randomly between 2 and 4
       # set the colors of this tile
@@ -45,19 +45,6 @@ class Tile:
       stddraw.setFontFamily(Tile.font_family)
       stddraw.setFontSize(Tile.font_size)
       stddraw.text(position.x, position.y, str(self.number))
-
-   # A method for moving this tetromino in a given direction by 1 on the grid
-   def fall(self, game_grid):
-         while self.can_fall(game_grid):
-            self.pos_y -= 1
-
-   def can_fall(self, game_grid):
-      # if the tile hit border
-      if self.y == 0:
-         return False  # this tile cannot be moved down
-      # if the grid cell below any bottommost tile is occupied
-      if game_grid.is_occupied(self.pos_y - 1, self.pos_x):
-         return False  # this tile cannot be moved down
-         # as the bottommost tile of the current row is checked
-      # if this method does not end by returning False before this line
-      return True  # this tile can be moved in the given direction
+   
+   def double(self):
+      self.number *= 2

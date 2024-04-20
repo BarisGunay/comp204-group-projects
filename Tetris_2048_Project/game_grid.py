@@ -42,13 +42,15 @@ class GameGrid:
 
    # A method for drawing the cells and the lines of the game grid
    def draw_grid(self):
+      self.find_positions()
       # for each cell of the game grid
       for row in range(self.grid_height):
          for col in range(self.grid_width):
+            current_tile = self.tile_matrix[row][col]
             # if the current grid cell is occupied by a tile
-            if self.tile_matrix[row][col] is not None:
+            if current_tile is not None:
                # draw this tile
-               self.tile_matrix[row][col].draw(Point(col, row))
+               current_tile.draw(current_tile.position)
       # draw the inner lines of the game grid
       stddraw.setPenColor(self.line_color)
       stddraw.setPenRadius(self.line_thickness)
@@ -130,6 +132,49 @@ class GameGrid:
       # return the value of the game_over flag
       return self.game_over
 
-#   def merge_tiles(self):
+   def find_positions(self):
       # scan the grid
-      # find who should merge
+      for col in range(self.grid_width):
+         for row in range(self.grid_height):
+            if self.tile_matrix[row][col] is not None:
+               self.tile_matrix[row][col].position.move(col, row)
+
+   def merge_tiles(self):
+      self.find_positions()
+      merge_count, new_count = 0, 0
+      while(new_count == merge_count):
+      # scan the grid
+         for col in range(self.grid_width):
+            for row in range(1, self.grid_height - 1):
+               next_tile = self.tile_matrix[row - 1][col]
+
+               if self.tile_matrix[row][col] is None or next_tile is None:
+                  continue
+               
+               if self.tile_matrix[row][col].number == next_tile.number:
+                  self.tile_matrix[row][col].double()
+                  self.tile_matrix[row - 1][col] = None
+                  self.fall(self.tile_matrix[row][col])
+                  merge_count += 1
+                  # + Update color needed
+
+               if self.tile_matrix[row][col] in self.current_tetromino.tile_matrix:
+                  for tile in self.current_tetromino.tile_matrix:
+                     self.fall(tile)
+         new_count += 1
+
+   # A method for moving this tetromino in a given direction by 1 on the grid
+   def fall(self, tile):
+         while self.can_fall(tile):
+            tile.position.translate(0, -1)
+   
+   def can_fall(self, tile):
+      # if the tile hit border
+      if tile.position.y == 0:
+         return False  # this tile cannot be moved down
+      # if the grid cell below any bottommost tile is occupied
+      if self.is_occupied(tile.position.y - 1, tile.position.x):
+         return False  # this tile cannot be moved down
+         # as the bottommost tile of the current row is checked
+      # if this method does not end by returning False before this line
+      return True  # this tile can be moved in the given direction

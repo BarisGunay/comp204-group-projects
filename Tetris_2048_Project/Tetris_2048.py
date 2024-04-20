@@ -68,6 +68,7 @@ def start():
       success = current_tetromino.move("down", grid)
       # lock the active tetromino onto the grid when it cannot go down anymore
       if not success:
+         grid.merge_tiles()
          # get the tile matrix of the tetromino without empty rows and columns
          # and the position of the bottom left cell in this matrix
          tiles, pos = current_tetromino.get_min_bounded_tile_matrix(True)
