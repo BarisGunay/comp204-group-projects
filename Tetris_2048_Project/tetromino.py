@@ -168,7 +168,7 @@ class Tetromino:
                   self.tile_matrix[row][col].draw(position)
 
    # A method for moving this tetromino in a given direction by 1 on the grid
-   def move(self, direction, game_grid):
+   def move(self, direction, game_grid, hard_drop=False):
       # check if this tetromino can be moved in the given direction by using
       # the can_be_moved method defined below
       if not (self.can_be_moved(direction, game_grid)):
@@ -178,8 +178,11 @@ class Tetromino:
          self.bottom_left_cell.x -= 1
       elif direction == "right":
          self.bottom_left_cell.x += 1
-      else:  # direction == "down"
-         self.bottom_left_cell.y -= 1
+      elif direction == "down" and not hard_drop:
+         self.bottom_left_cell.y -= 1   
+      elif direction == "h" and hard_drop:
+         while self.can_be_moved("down", game_grid):
+            self.bottom_left_cell.y -= 1
       return True  # a successful move in the given direction
 
    # A method for checking if this tetromino can be moved in a given direction

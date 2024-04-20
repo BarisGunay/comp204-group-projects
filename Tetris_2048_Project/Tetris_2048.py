@@ -55,8 +55,12 @@ def start():
             # move the active tetromino down by one
             # (soft drop: causes the tetromino to fall down faster)
             current_tetromino.move(key_typed, grid)
-         elif key_typed == "space":
+         elif key_typed == "space": # it rotates the the tetraminos by clockwise
             current_tetromino.rotate_clockwise(grid)   
+            # if the right arrow key has been pressed
+         elif key_typed == "h":
+            # hard drop the active tetromino 
+            current_tetromino.move(key_typed, grid,hard_drop=True)
          # clear the queue of the pressed keys for a smoother interaction
          stddraw.clearKeysTyped()
 
