@@ -129,3 +129,18 @@ class GameGrid:
       self.clear_full_lines()
       # return the value of the game_over flag
       return self.game_over
+
+   def merge_tiles(self):
+      # Iterate over each column
+      for col in range(self.grid_width):
+         # Iterate over each row within the column (from top to bottom)
+         for row in range(self.grid_height - 1):
+               current_tile = self.tile_matrix[row][col]
+               next_tile = self.tile_matrix[row + 1][col]
+
+               # Check if both tiles are not None and have the same value
+               if current_tile is not None and next_tile is not None and current_tile.number == next_tile.number:
+                  # Double the value of the tile below
+                  self.tile_matrix[row][col].number *= 2
+                  # Remove the tile above
+                  self.tile_matrix[row + 1][col] = None
