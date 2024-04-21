@@ -167,12 +167,12 @@ class GameGrid:
    
    # A method for clearing full lines in the game grid
    def clear_full_lines(self):
-      rows_to_clear = []  # list to store the row indexes of full rows
+      rows_to_clear = []  # this variable list store the row indexes of full rows
       for row in range(self.grid_height):
-         # check if all cells in the current row are occupied
-         if all(self.tile_matrix[row]):
+        # this all method checks all cells in the current row are occupied
+         if all(self.tile_matrix[row]): 
             rows_to_clear.append(row)  # add the index of the full row to the list
-      # remove the full rows from the grid
+      # we remove the full rows from the grid thanks to this for loop
       for row in rows_to_clear:
          # update the score with the values of each tile.
          self.score += sum([tile.number for tile in self.tile_matrix[row] if tile is not None])

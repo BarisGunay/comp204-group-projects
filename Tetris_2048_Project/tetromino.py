@@ -13,11 +13,13 @@ class Tetromino:
    def __init__(self, shape):
       self.type = shape  # set the type of this tetromino
       # determine the occupied (non-empty) cells in the tile matrix based on
-      # the shape of this tetromino (see the documentation given with this code)
+      # we give the shape of this tetromino using occupied_cells list it is 2d list 
+      # and it keeps the column and row indexes of tiles
       occupied_cells = []
       if self.type == 'I':
          n = 4  # n = number of rows = number of columns in the tile matrix
-         # shape of the tetromino I in its initial rotation state
+         # because of that we have  4*4 =16 cells matrix 
+         # and here we fill the tiles according to shape of the tetromino I in its initial rotation state
          occupied_cells.append((1, 0))  # (column_index, row_index)
          occupied_cells.append((1, 1))
          occupied_cells.append((1, 2))
@@ -25,6 +27,8 @@ class Tetromino:
       elif self.type == 'O':
          n = 2  # n = number of rows = number of columns in the tile matrix
          # shape of the tetromino O in its initial rotation state
+         # because of that we have  2*2 =4 cells matrix 
+         # and here we fill the tiles according to shape of the tetromino O in its initial rotation state
          occupied_cells.append((0, 0))  # (column_index, row_index)
          occupied_cells.append((1, 0))
          occupied_cells.append((0, 1))
@@ -32,12 +36,15 @@ class Tetromino:
       elif self.type == 'Z':
          n = 3  # n = number of rows = number of columns in the tile matrix
          # shape of the tetromino Z in its initial rotation state
+         # because of that we have  3*3 =9 cells matrix 
+         # and here we fill the tiles according to shape of the tetromino Z in its initial rotation state
          occupied_cells.append((0, 1))  # (column_index, row_index)
          occupied_cells.append((1, 1))
          occupied_cells.append((1, 2))
          occupied_cells.append((2, 2))
       elif self.type == 'J':
          n = 3
+         # and here we fill the tiles according to shape of the tetromino J in its initial rotation state
          # J tetromino shape
          occupied_cells.append((1, 0))  # (column_index, row_index)
          occupied_cells.append((1, 1))
@@ -45,6 +52,7 @@ class Tetromino:
          occupied_cells.append((0, 2))
       elif self.type == 'L':
          n = 3
+         # and here we fill the tiles according to shape of the tetromino L in its initial rotation state
          # L tetromino shape
          occupied_cells.append((1, 0))  # (column_index, row_index)
          occupied_cells.append((1, 1))
@@ -52,6 +60,7 @@ class Tetromino:
          occupied_cells.append((2, 2))
       elif self.type == 'S':
          n = 3
+         # and here we fill the tiles according to shape of the tetromino S in its initial rotation state
          # S tetromino shape
          occupied_cells.append((1, 0))  # (column_index, row_index)
          occupied_cells.append((2, 0))
@@ -59,11 +68,13 @@ class Tetromino:
          occupied_cells.append((1, 1))
       elif self.type == 'T':
          n = 3
+         # and here we fill the tiles according to shape of the tetromino T in its initial rotation state
          # T tetromino shape
          occupied_cells.append((0, 1))  # (column_index, row_index)
          occupied_cells.append((1, 1))
          occupied_cells.append((2, 1))
          occupied_cells.append((1, 2))   
+      # REST OF THIS SAME WITH THE BASE CODE THAT WE GET
       # create a matrix of numbered tiles based on the shape of this tetromino
       self.tile_matrix = np.full((n, n), None)
       # create the four tiles (minos) of this tetromino and place these tiles
@@ -79,33 +90,35 @@ class Tetromino:
       self.bottom_left_cell.x = random.randint(0, Tetromino.grid_width - n)
 
       # A method for rotating this tetromino clockwise by 90 degrees
+      # It takes game grid as parameter 
    def rotate_clockwise(self, game_grid):
       n = len(self.tile_matrix)  # n = number of rows = number of columns
-      # create a copy of the current tile matrix
+      # create a copy of the current tile matrix and fill as empty cells
       new_tile_matrix = np.full((n, n), None)
-      # rotate the tile matrix by 90 degrees clockwise
+      # rotate the tile matrix by 90 degrees clockwise thanks to these for loops
       for row in range(n):
          for col in range(n):
             new_tile_matrix[col][n - 1 - row] = self.tile_matrix[row][col]
+            # here we rotate each cells by 90 degrees clockwise
       # check if the rotated tetromino can fit in the game grid
-      if self.can_fit(new_tile_matrix, game_grid):
+      if self.can_fit(new_tile_matrix, game_grid): # If the created tile matrix can fit into the game grid, we update the tile matrix
          self.tile_matrix = new_tile_matrix  # update the tile matrix
       return self.can_fit(new_tile_matrix, game_grid)  # return whether the rotation was successful
 
    # A method for checking if a given tile matrix can fit in the game grid
-   def can_fit(self, tile_matrix, game_grid):
+   def can_fit(self, tile_matrix, game_grid): # It takes game grid as parameter 
       n = len(tile_matrix)  # n = number of rows = number of columns
       for row in range(n):
          for col in range(n):
             # check if any cell of the rotated tile matrix overlaps with an
-            # occupied cell in the game grid
-            if tile_matrix[row][col] is not None:
-               position = self.get_cell_position(row, col)
+            # occupied cell in the game grid thanks to these for loops
+            if tile_matrix[row][col] is not None: # if tile is not empty we do the operations
+               position = self.get_cell_position(row, col) # we get position of tile
                if position.y < 0 or position.y >= Tetromino.grid_height or position.x < 0 or position.x >= Tetromino.grid_width:
-                  return False  # the rotated tetromino is out of bounds
+                  return False  # the rotated tetromino is out of bounds we return false
                if game_grid.is_occupied(position.y, position.x):
-                  return False  # the rotated tetromino overlaps with an occupied cell
-      return True  # the rotated tetromino fits in the game grid
+                  return False  # the rotated tetromino overlaps with an occupied cell we return false
+      return True  # the rotated tetromino fits in the game grid we return true
      
       
    # A method that computes and returns the position of the cell in the tile
@@ -180,8 +193,8 @@ class Tetromino:
          self.bottom_left_cell.x += 1
       elif direction == "down" and not hard_drop:
          self.bottom_left_cell.y -= 1   
-      elif direction == "h" and hard_drop:
-         while self.can_be_moved("down", game_grid):
+      elif direction == "h" and hard_drop: # here we implement the hard drop 
+         while self.can_be_moved("down", game_grid): # when user pressed h we drop hardly the tetramino until it doesnt move
             self.bottom_left_cell.y -= 1
       return True  # a successful move in the given direction
 
