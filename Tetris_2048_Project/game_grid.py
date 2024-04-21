@@ -32,6 +32,9 @@ class GameGrid:
       self.score = 0
       # initialize the game as not won
       self.win = False
+      
+      # initialize speed
+      self.speed = 250 # default
 
    # A method for displaying the game grid
    def display(self):
@@ -51,7 +54,7 @@ class GameGrid:
       # draw a box around the game grid
       self.draw_boundaries()
       # show the resulting drawing with a pause duration = 250 ms
-      stddraw.show(250)
+      stddraw.show(self.speed)
 
    def draw_score(self):
       # Set the color for the score display
@@ -73,7 +76,6 @@ class GameGrid:
       # Draw instructions to rotate.
       stddraw.text(self.grid_width + self.right_panel_width // 2, self.grid_height - 11.4, "Press 'SPACE'")
       stddraw.text(self.grid_width + self.right_panel_width // 2, self.grid_height - 12.1, "to rotate piece")
-
 
    def update_score(self, points):
       self.score += points
@@ -224,3 +226,6 @@ class GameGrid:
       self.clear_full_lines()
       # return the value of the game_over flag
       return self.game_over
+
+   def set_speed(self, speed):
+      self.speed = speed
