@@ -32,7 +32,7 @@ class GameGrid:
       self.score = 0
 
    # A method for displaying the game grid
-   def display(self):
+   def display(self, tetro):
       # clear the background to empty_cell_color
       stddraw.clear(self.empty_cell_color)
       # draw the game grid
@@ -42,6 +42,7 @@ class GameGrid:
 
       self.draw_score()
 
+      self.draw_next(tetro)
       # draw the current/active tetromino if it is not None
       # (the case when the game grid is updated)
       if self.current_tetromino is not None:
@@ -50,6 +51,26 @@ class GameGrid:
       self.draw_boundaries()
       # show the resulting drawing with a pause duration = 250 ms
       stddraw.show(250)
+
+   def draw_next(self, next_tetro):
+      # for each cell of the next tetromino
+      for row in range(len(next_tetro.tile_matrix)):
+         for col in range(len(next_tetro.tile_matrix[0])):
+               if next_tetro.tile_matrix[row][col] is not None:
+                  y = next_tetro.grid_height - row - 15
+                  x = next_tetro.grid_width + col + 1
+                  next_tetro.tile_matrix[row][col].draw(Point(x, y))
+
+
+      stddraw.setPenColor(self.line_color)
+      stddraw.setPenRadius(self.line_thickness)
+      start_x, end_x = self.grid_width - 0.5, self.grid_width + len(next_tetro.tile_matrix[0]) - 0.5
+      start_y, end_y = -0.5, len(next_tetro.tile_matrix) - 0.5
+
+      stddraw.setPenRadius()  # reset the pen radius to its default value
+
+
+
 
    def draw_score(self):
       # Set the color for the score display

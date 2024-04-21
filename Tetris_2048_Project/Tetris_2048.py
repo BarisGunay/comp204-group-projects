@@ -11,12 +11,15 @@ import os  # the os module is used for file and directory operations
 from game_grid import GameGrid  # the class for modeling the game grid
 from tetromino import Tetromino  # the class for modeling the tetrominoes
 import random  # used for creating tetrominoes with random types (shapes)
+from point import Point
 
 # The main function where this program starts execution
 def start():
    # set the dimensions of the game grid
+   global grid_h, grid_w
    grid_h, grid_w = 20, 12
 
+   global right_panel_width
    right_panel_width = 5
 
    # set the size of the drawing canvas (the displayed window)
@@ -35,6 +38,7 @@ def start():
    # by using the create_tetromino function defined below
    current_tetromino = create_tetromino()
    grid.current_tetromino = current_tetromino
+   next_tetro = create_tetromino()
 
    # display a simple menu before opening the game
    # by using the display_game_menu function defined below
@@ -59,10 +63,10 @@ def start():
             # (soft drop: causes the tetromino to fall down faster)
             current_tetromino.move(key_typed, grid)
          elif key_typed == "space": # it rotates the the tetraminos by clockwise
-            current_tetromino.rotate_clockwise(grid)   
+            current_tetromino.rotate_clockwise(grid)
             # if the right arrow key has been pressed
          elif key_typed == "h":
-            # hard drop the active tetromino 
+            # hard drop the active tetromino
             current_tetromino.move(key_typed, grid,hard_drop=True)
          # clear the queue of the pressed keys for a smoother interaction
          stddraw.clearKeysTyped()
@@ -81,11 +85,14 @@ def start():
             break
          # create the next tetromino to enter the game grid
          # by using the create_tetromino function defined below
-         current_tetromino = create_tetromino()
+         current_tetromino = next_tetro
          grid.current_tetromino = current_tetromino
 
+         next_tetro = create_tetromino()
+
+
       # display the game grid with the current tetromino
-      grid.display()
+      grid.display(next_tetro)
 
    # print a message on the console when the game is over
    print("Game over")
@@ -144,6 +151,9 @@ def display_game_menu(grid_height, grid_width):
          if mouse_x >= button_blc_x and mouse_x <= button_blc_x + button_w:
             if mouse_y >= button_blc_y and mouse_y <= button_blc_y + button_h:
                break  # break the loop to end the method and start the game
+
+
+
 
 
 # start() function is specified as the entry point (main function) from which
