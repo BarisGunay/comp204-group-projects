@@ -179,7 +179,8 @@ class GameGrid:
          self.tile_matrix = np.delete(self.tile_matrix, row, axis=0)
          # add a new empty row at the top of the grid
          new_row = np.full((1, self.grid_width), None)
-         self.tile_matrix = np.concatenate((self.tile_matrix, new_row), axis=0)
+         self.tile_matrix = np.concatenate((self.tile_matrix, new_row), axis=0)#This effectively adds the new row to the top of the grid,
+                                                #shifting all existing rows down by one position.
 
          
    def merge_tiles(self):
