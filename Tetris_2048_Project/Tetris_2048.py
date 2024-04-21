@@ -15,8 +15,12 @@ import random  # used for creating tetrominoes with random types (shapes)
 # The main function where this program starts execution
 def start(startup):
    # set the dimensions of the game grid
+   global grid_h, grid_w
    grid_h, grid_w = 20, 12
+
+   global right_panel_width
    right_panel_width = 5
+
    # set the size of the drawing canvas (the displayed window)
    canvas_h, canvas_w = 40 * grid_h, 40 * (grid_w + right_panel_width)
    # only set stddraw window on startup
@@ -35,6 +39,7 @@ def start(startup):
    # by using the create_tetromino function defined below
    current_tetromino = create_tetromino()
    grid.current_tetromino = current_tetromino
+   next_tetro = create_tetromino()
 
    # display a simple menu before opening the game
    # by using the display_game_menu function defined below
@@ -92,11 +97,13 @@ def start(startup):
             break
          # create the next tetromino to enter the game grid
          # by using the create_tetromino function defined below
-         current_tetromino = create_tetromino()
+         current_tetromino = next_tetro
          grid.current_tetromino = current_tetromino
 
+         next_tetro = create_tetromino()
+
       # display the game grid with the current tetromino
-      grid.display()
+      grid.display(next_tetro)
 
    # print a message on the console when the game is over
    print("Game over")
