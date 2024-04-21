@@ -182,7 +182,6 @@ class GameGrid:
          self.tile_matrix = np.concatenate((self.tile_matrix, new_row), axis=0)
 
          
-     #A method for merging adjacent tiles with the same value    
    def merge_tiles(self):
       merged = True
       while merged:
@@ -196,18 +195,24 @@ class GameGrid:
                      continue
             # Check if there is a neighboring tile with the same value
             # and merge them
-                  if row + 1 < self.grid_height and self.tile_matrix[row + 1][col] is not None:
+                  if row + 1 < self.grid_height and self.tile_matrix[row + 1][col] is not None and self.tile_matrix[row][col] is not None:
                      if current_tile.number == self.tile_matrix[row + 1][col].number:
                         current_tile.number *= 2
                         self.score += current_tile.number
                         self.tile_matrix[row + 1][col] = None
                         self.tile_matrix[row ][col].change_color()
                         merged = True
-                  for i in range(2, self.grid_height - 1):
-                     if row + i < self.grid_height and self.tile_matrix[row + i][col] is not None:
-                        if self.tile_matrix[row + i-1][col] == None: 
-                           self.tile_matrix[row + i-1][col] = self.tile_matrix[row + i][col]
-                           self.tile_matrix[row + i][col] = None
+                        if row + 2 < self.grid_height and self.tile_matrix[row + 2][col] is not None:
+                           if self.tile_matrix[row + 1][col] == None: 
+                              self.tile_matrix[row + 1][col] = self.tile_matrix[row + 2][col]
+                              self.tile_matrix[row + 2][col] = None
+                              merged = True
+                        if row + 3 < self.grid_height and self.tile_matrix[row + 3][col] is not None:
+                           if self.tile_matrix[row + 2][col] == None: 
+                              self.tile_matrix[row + 2][col] = self.tile_matrix[row + 3][col]
+                              self.tile_matrix[row + 3][col] = None 
+                              merged = True
+      
 
                                                           
    # A method that locks the tiles of a landed tetromino on the grid checking
