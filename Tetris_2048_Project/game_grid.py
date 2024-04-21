@@ -62,15 +62,12 @@ class GameGrid:
       # for each cell of the next tetromino
       for row in range(len(next_tetro.tile_matrix)):
          for col in range(len(next_tetro.tile_matrix[0])):
+            # finds the tiles to draw
             if next_tetro.tile_matrix[row][col] is not None:
+               # calculates the positions to draw into
                y = next_tetro.grid_height - row - 15
                x = next_tetro.grid_width + col + 1
                next_tetro.tile_matrix[row][col].draw(Point(x, y))
-      stddraw.setPenColor(self.line_color)
-      stddraw.setPenRadius(self.line_thickness)
-      start_x, end_x = self.grid_width - 0.5, self.grid_width + len(next_tetro.tile_matrix[0]) - 0.5
-      start_y, end_y = -0.5, len(next_tetro.tile_matrix) - 0.5
-      
       stddraw.setPenRadius()
 
    # A method for drawing the score, and other textual elements into the right panel.

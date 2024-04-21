@@ -10,6 +10,7 @@ class Tile:
    boundary_thickness = 0.004
    # font family and font size used for displaying the tile number
    font_family, font_size = "Arial", 14
+   # dictionary to correlate the tile numbers to the tile colors
    color_key = {
          2: Color(238, 228, 218),   # Skin color
          4: Color(236, 224, 199),   # Shade of red
