@@ -29,23 +29,16 @@ class Tile:
       # set the number on this tile
       self.number = random.choice([2, 4]) #choose randomly between 2 and 4
       # set the colors of this tile
-      self.background_color = Color(238,228,218)  # background (tile) color
+      self.change_color()  
       self.foreground_color = Color(159,149,138)  # foreground (number) color
       self.box_color = Color(143,134,125)  # box (boundary) color
-      if self.number == 4:
-         self.background_color = Color(236,224,200) 
-          # darken the box color if the number is 4
-      elif self.number == 2: 
-         self.background_color = Color(238,228,218)   
-         # light color of the box color if the number is 2 
-      self.change_color()  
-      
       
    def change_color(self):
       if self.number in self.color_key:
          self.background_color = self.color_key[self.number]
       else:
          self.background_color = Color(238,228,218)
+
    # A method for drawing this tile at a given position with a given length
    def draw(self, position, length=1):  # length defaults to 1
       # draw the tile as a filled square
