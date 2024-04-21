@@ -30,6 +30,8 @@ class GameGrid:
 
       # initialize the score to 0
       self.score = 0
+      # initialize the game as not won
+      self.win = False
 
    # A method for displaying the game grid
    def display(self):
@@ -37,9 +39,9 @@ class GameGrid:
       stddraw.clear(self.empty_cell_color)
       # draw the game grid
       self.draw_grid()
-
+      # draw the right panel
       self.draw_right_panel()
-
+      # draw the score panel
       self.draw_score()
 
       # draw the current/active tetromino if it is not None
@@ -55,16 +57,26 @@ class GameGrid:
       # Set the color for the score display
       stddraw.setPenColor(Color(0,0,0))
       # Set the font size for the score display
-      stddraw.setFontSize(24)
+      stddraw.setFontSize(32)
       # Draw the score on the right panel
-      stddraw.text(self.grid_width + self.right_panel_width // 2, self.grid_height -3, "Score: ")
+      stddraw.text(self.grid_width + self.right_panel_width // 2, self.grid_height - 3, "Score: ")
       # Draw the actual score value below the "Score: " text
-      stddraw.text(self.grid_width + self.right_panel_width // 2, self.grid_height -4, str(self.score))
+      stddraw.setFontSize(28)
+      stddraw.text(self.grid_width + self.right_panel_width // 2, self.grid_height - 4, str(self.score))
+      # Draw instructions to pause the game.
+      stddraw.setFontSize(24)
+      stddraw.text(self.grid_width + self.right_panel_width // 2, self.grid_height - 8, "Press 'P'")
+      stddraw.text(self.grid_width + self.right_panel_width // 2, self.grid_height - 8.7, "to pause the game")
+      # Draw instructions to hard drop.
+      stddraw.text(self.grid_width + self.right_panel_width // 2, self.grid_height - 9.7, "Press 'H'")
+      stddraw.text(self.grid_width + self.right_panel_width // 2, self.grid_height - 10.4, "to hard drop")
+      # Draw instructions to rotate.
+      stddraw.text(self.grid_width + self.right_panel_width // 2, self.grid_height - 11.4, "Press 'SPACE'")
+      stddraw.text(self.grid_width + self.right_panel_width // 2, self.grid_height - 12.1, "to rotate piece")
 
 
    def update_score(self, points):
       self.score += points
-
 
    def draw_right_panel(self):
       # Set the pen color and thickness for the right-side panel
@@ -74,14 +86,12 @@ class GameGrid:
       # Culculate the starting and ending coodinates of the right-side panel
       start_x = self.grid_width
       end_x = start_x + self.right_panel_width
-      start_y, end_y = -0.5, self.grid_height - 0.5
+      start_y, end_y = - 0.5, self.grid_height - 0.5
 
       # Draw the right-side panel as a rectangle
       stddraw.rectangle(start_x, start_y, self.right_panel_width, self.grid_height)
       # Reset the pen radius to its default value
       stddraw.setPenRadius()
-
-
 
    # A method for drawing the cells and the lines of the game grid
    def draw_grid(self):
@@ -201,6 +211,13 @@ class GameGrid:
                # the game is over if any placed tile is above the game grid
                else:
                   self.game_over = True
+      # search the number of every tile in the grid, if 2048 or higher, end the game.
+      for col in range(self.grid_width):
+         for row in range(self.grid_height):
+            if self.tile_matrix[row][col] is not None and self.tile_matrix[row][col].number >= 2048:
+               self.game_over = True
+               self.win = True
+               
       # merging tiles before clearing full lines
       self.merge_tiles()
       # clear full lines in the game grid

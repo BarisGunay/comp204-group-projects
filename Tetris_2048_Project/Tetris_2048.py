@@ -13,18 +13,18 @@ from tetromino import Tetromino  # the class for modeling the tetrominoes
 import random  # used for creating tetrominoes with random types (shapes)
 
 # The main function where this program starts execution
-def start():
+def start(startup):
    # set the dimensions of the game grid
    grid_h, grid_w = 20, 12
-
    right_panel_width = 5
-
    # set the size of the drawing canvas (the displayed window)
    canvas_h, canvas_w = 40 * grid_h, 40 * (grid_w + right_panel_width)
-   stddraw.setCanvasSize(canvas_w, canvas_h)
-   # set the scale of the coordinate system for the drawing canvas
-   stddraw.setXscale(-0.5, grid_w + right_panel_width - 0.5)
-   stddraw.setYscale(-0.5, grid_h - 0.5)
+   # only set stddraw window on startup
+   if startup:
+      stddraw.setCanvasSize(canvas_w, canvas_h)
+      # set the scale of the coordinate system for the drawing canvas
+      stddraw.setXscale(-0.5, grid_w + right_panel_width - 0.5)
+      stddraw.setYscale(-0.5, grid_h - 0.5)
 
    # set the game grid dimension values stored and used in the Tetromino class
    Tetromino.grid_height = grid_h
@@ -61,6 +61,9 @@ def start():
          elif key_typed == "space": # it rotates the the tetraminos by clockwise
             current_tetromino.rotate_clockwise(grid)   
             # if the right arrow key has been pressed
+         elif key_typed == "p": # opens pause menu
+            display_pause_menu(grid_h, grid_w)
+            # if the right arrow key has been pressed
          elif key_typed == "h":
             # hard drop the active tetromino 
             current_tetromino.move(key_typed, grid,hard_drop=True)
@@ -76,8 +79,13 @@ def start():
          tiles, pos = current_tetromino.get_min_bounded_tile_matrix(True)
          # update the game grid by locking the tiles of the landed tetromino
          game_over = grid.update_grid(tiles, pos)
+         game_win = grid.win
          # end the main game loop if the game is over
-         if game_over:
+         if game_over and game_win:
+            display_gameover_menu(grid_h, grid_w, "You won the game!", grid.score)
+            break
+         elif game_over and not game_win:
+            display_gameover_menu(grid_h, grid_w, "Game over, you lost!", grid.score)
             break
          # create the next tetromino to enter the game grid
          # by using the create_tetromino function defined below
@@ -145,8 +153,113 @@ def display_game_menu(grid_height, grid_width):
             if mouse_y >= button_blc_y and mouse_y <= button_blc_y + button_h:
                break  # break the loop to end the method and start the game
 
+def display_pause_menu(grid_height, grid_width):
+   # the colors used for the menu
+   background_color = Color(42, 69, 99)
+   button_color = Color(25, 255, 228)
+   text_color = Color(31, 160, 239)
+   # clear the background drawing canvas to background_color
+   stddraw.clear(background_color)
+   # the dimensions for the continue game button
+   button_w, button_h = grid_width - 1.5, 2
+   # the coordinates of the bottom left corner for the continue game button
+   button_blc_x, button_blc_y = 5 - button_w / 2, 4
+   # add the continue game button as a filled rectangle
+   stddraw.setPenColor(button_color)
+   stddraw.filledRectangle(button_blc_x + 3, button_blc_y, button_w, button_h)
+   # add the text on the continue game button
+   stddraw.setFontFamily("Arial")
+   stddraw.setFontSize(25)
+   stddraw.setPenColor(text_color)
+   text_to_display = "Continue"
+   stddraw.text(8, 5, text_to_display)
+   # add the back to menu game button as a filled rectangle
+   stddraw.setPenColor(button_color)
+   stddraw.filledRectangle(button_blc_x + 3, button_blc_y + 3, button_w, button_h)
+   # add the text on the back to menu game button
+   stddraw.setFontFamily("Arial")
+   stddraw.setFontSize(25)
+   stddraw.setPenColor(text_color)
+   text_to_display = "Back to Main Menu"
+   stddraw.text(8, 8, text_to_display)
+   # add the pause text
+   stddraw.setFontSize(45)
+   text_to_display = "Game Paused"
+   stddraw.text(8, 15, text_to_display)
+   # check if the mouse has been left-clicked on the continue game button
+   while True:
+      # display the menu and wait for a short time (50 ms)
+      stddraw.show(50)
+      # check if the mouse has been left-clicked on the start game button
+      if stddraw.mousePressed():
+         # get the coordinates of the most recent location at which the mouse
+         # has been left-clicked
+         mouse_x, mouse_y = stddraw.mouseX(), stddraw.mouseY()
+         # check if these coordinates are inside the button
+         if mouse_x >= button_blc_x + 3 and mouse_x <= button_blc_x + button_w + 3:
+            if mouse_y >= button_blc_y and mouse_y <= button_blc_y + button_h:
+               break  # break the loop to end the method and start the game
+         if mouse_x >= button_blc_x + 3 and mouse_x <= button_blc_x + button_w + 3:
+            if mouse_y >= button_blc_y + 3 and mouse_y <= button_blc_y + 3 + button_h:
+               start(False)
+            
+def display_gameover_menu(grid_height, grid_width, message, score):
+   # the colors used for the menu
+   background_color = Color(42, 69, 99)
+   button_color = Color(25, 255, 228)
+   text_color = Color(31, 160, 239)
+   # clear the background drawing canvas to background_color
+   stddraw.clear(background_color)
+   # the dimensions for the continue game button
+   button_w, button_h = grid_width - 1.5, 2
+   # the coordinates of the bottom left corner for the continue game button
+   button_blc_x, button_blc_y = 5 - button_w / 2, 4
+   # add the quit game button as a filled rectangle
+   stddraw.setPenColor(button_color)
+   stddraw.filledRectangle(button_blc_x + 3, button_blc_y, button_w, button_h)
+   # add the text on the quit game button
+   stddraw.setFontFamily("Arial")
+   stddraw.setFontSize(25)
+   stddraw.setPenColor(text_color)
+   text_to_display = "Exit Game"
+   stddraw.text(8, 5, text_to_display)
+   # add the back to menu game button as a filled rectangle
+   stddraw.setPenColor(button_color)
+   stddraw.filledRectangle(button_blc_x + 3, button_blc_y + 3, button_w, button_h)
+   # add the text on the back to menu game button
+   stddraw.setFontFamily("Arial")
+   stddraw.setFontSize(25)
+   stddraw.setPenColor(text_color)
+   text_to_display = "Return to Main Menu"
+   stddraw.text(8, 8, text_to_display)
+   # add the game over text
+   stddraw.setFontSize(50)
+   text_to_display = message
+   stddraw.text(8, 15, text_to_display)
+   # add the score
+   stddraw.setFontFamily("Arial")
+   stddraw.setFontSize(35)
+   stddraw.setPenColor(text_color)
+   text_to_display = "Score: " + str(score)
+   stddraw.text(8, 13, text_to_display)
+   # check if the mouse has been left-clicked on the continue game button
+   while True:
+      # display the menu and wait for a short time (50 ms)
+      stddraw.show(50)
+      # check if the mouse has been left-clicked on the start game button
+      if stddraw.mousePressed():
+         # get the coordinates of the most recent location at which the mouse
+         # has been left-clicked
+         mouse_x, mouse_y = stddraw.mouseX(), stddraw.mouseY()
+         # check if these coordinates are inside the button
+         if mouse_x >= button_blc_x + 3 and mouse_x <= button_blc_x + button_w + 3:
+            if mouse_y >= button_blc_y and mouse_y <= button_blc_y + button_h:
+               break  # break the loop to end the method and start the game
+         if mouse_x >= button_blc_x + 3 and mouse_x <= button_blc_x + button_w + 3:
+            if mouse_y >= button_blc_y + 3 and mouse_y <= button_blc_y + 3 + button_h:
+               start(False)
 
 # start() function is specified as the entry point (main function) from which
 # the program starts execution
 if __name__ == '__main__':
-   start()
+   start(True)
