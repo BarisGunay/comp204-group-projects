@@ -75,26 +75,25 @@ class GameGrid:
 
    def draw_score(self):
       # Set the color for the score display
-      stddraw.setPenColor(Color(0,0,0))
+      stddraw.setPenColor(Color(109, 130, 169))
+      stddraw.setFontFamily("Unbounded")
       # Set the font size for the score display
-      stddraw.setFontSize(32)
+      stddraw.setFontSize(65)
       # Draw the score on the right panel
-      stddraw.text(self.grid_width + self.right_panel_width // 2, self.grid_height - 3, "SCORE")
+      stddraw.text(self.grid_width + self.right_panel_width // 2 + 0.2, self.grid_height - 2.5, "Score: ")
       # Draw the actual score value below the "Score: " text
-      stddraw.setFontSize(28)
+      stddraw.setFontSize(50)
       stddraw.text(self.grid_width + self.right_panel_width // 2, self.grid_height - 4, str(self.score))
       # Draw instructions to pause the game.
-      stddraw.setFontSize(24)
+      stddraw.setFontSize(30)
       stddraw.text(self.grid_width + self.right_panel_width // 2, self.grid_height - 7, "Press 'P'")
       stddraw.text(self.grid_width + self.right_panel_width // 2, self.grid_height - 7.7, "to pause the game")
       # Draw instructions to hard drop.
-      stddraw.text(self.grid_width + self.right_panel_width // 2, self.grid_height - 8.7, "Press 'H'")
-      stddraw.text(self.grid_width + self.right_panel_width // 2, self.grid_height - 9.4, "to hard drop")
+      stddraw.text(self.grid_width + self.right_panel_width // 2, self.grid_height - 9.2, "Press 'H'")
+      stddraw.text(self.grid_width + self.right_panel_width // 2, self.grid_height - 9.9, "to hard drop")
       # Draw instructions to rotate.
-      stddraw.text(self.grid_width + self.right_panel_width // 2, self.grid_height - 10.4, "Press 'SPACE'")
-      stddraw.text(self.grid_width + self.right_panel_width // 2, self.grid_height - 11.1, "to rotate piece")
-      # Draw text for next piece.
-      stddraw.text(self.grid_width + self.right_panel_width // 2, self.grid_height - 13.1, "NEXT PIECE")
+      stddraw.text(self.grid_width + self.right_panel_width // 2, self.grid_height - 11.4, "Press 'SPACE'")
+      stddraw.text(self.grid_width + self.right_panel_width // 2, self.grid_height - 12.1, "to rotate piece")
 
    def update_score(self, points):
       self.score += points
@@ -181,7 +180,7 @@ class GameGrid:
          # add a new empty row at the top of the grid
          new_row = np.full((1, self.grid_width), None)
          self.tile_matrix = np.concatenate((self.tile_matrix, new_row), axis=0)
-      print(self.score)
+
          
      #A method for merging adjacent tiles with the same value    
    def merge_tiles(self):
@@ -209,7 +208,7 @@ class GameGrid:
                         if self.tile_matrix[row + i-1][col] == None: 
                            self.tile_matrix[row + i-1][col] = self.tile_matrix[row + i][col]
                            self.tile_matrix[row + i][col] = None
-      print(self.score)
+
                                                           
    # A method that locks the tiles of a landed tetromino on the grid checking
    # if the game is over due to having any tile above the topmost grid row.
