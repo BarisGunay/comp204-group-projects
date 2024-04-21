@@ -106,8 +106,7 @@ class GameGrid:
 
       # Calculate the starting and ending coordinates of the right-side panel
       start_x = self.grid_width
-      end_x = start_x + self.right_panel_width
-      start_y, end_y = - 0.5, self.grid_height - 0.5
+      start_y= - 0.5
 
       # Draw the right-side panel as a rectangle
       stddraw.rectangle(start_x, start_y, self.right_panel_width, self.grid_height)
