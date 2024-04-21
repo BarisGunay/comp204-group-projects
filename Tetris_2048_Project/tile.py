@@ -34,9 +34,12 @@ class Tile:
       self.box_color = Color(143,134,125)  # box (boundary) color
       
    def change_color(self):
+      # checks if the number attribute is in the dictionary
       if self.number in self.color_key:
+         # updates to the corresponding color
          self.background_color = self.color_key[self.number]
       else:
+         #keeps the color at default
          self.background_color = Color(238,228,218)
 
    # A method for drawing this tile at a given position with a given length

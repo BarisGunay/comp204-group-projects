@@ -75,7 +75,7 @@ class GameGrid:
 
    def draw_score(self):
       # Set the color for the score display
-      stddraw.setPenColor(Color(109, 130, 169))
+      stddraw.setPenColor(Color(160, 109, 130))
       stddraw.setFontFamily("Unbounded")
       # Set the font size for the score display
       stddraw.setFontSize(65)
@@ -103,7 +103,7 @@ class GameGrid:
       stddraw.setPenColor(self.line_color)
       stddraw.setPenRadius(self.line_thickness)
 
-      # Culculate the starting and ending coodinates of the right-side panel
+      # Calculate the starting and ending coordinates of the right-side panel
       start_x = self.grid_width
       end_x = start_x + self.right_panel_width
       start_y, end_y = - 0.5, self.grid_height - 0.5

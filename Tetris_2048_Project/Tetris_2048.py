@@ -35,6 +35,7 @@ def start(startup):
    # by using the create_tetromino function defined below
    current_tetromino = create_tetromino()
    grid.current_tetromino = current_tetromino
+   #creates the next tetromino
    next_tetro = create_tetromino()
 
    # display a simple menu before opening the game
@@ -91,11 +92,12 @@ def start(startup):
          elif game_over and not game_win:
             display_gameover_menu(grid_h, grid_w, "Game over, you lost!", grid.score)
             break
-         # create the next tetromino to enter the game grid
-         # by using the create_tetromino function defined below
+
+         # updates to the next tetromino, after locking the current tetromino
          current_tetromino = next_tetro
          grid.current_tetromino = current_tetromino
 
+         # creates the 'next' next tetromino
          next_tetro = create_tetromino()
 
       # display the game grid with the current tetromino
@@ -118,7 +120,7 @@ def create_tetromino():
 def display_game_menu(grid_height, grid_width):
    # the colors used for the menu
    background_color = Color(42, 69, 99)
-   button_color = Color(25, 255, 228)
+   button_color = Color(238, 228, 218)
    text_color = Color(31, 160, 239)
    # clear the background drawing canvas to background_color
    stddraw.clear(background_color)
@@ -160,7 +162,7 @@ def display_game_menu(grid_height, grid_width):
                break  # break the loop to end the method and start the game
 
 def display_speed_menu(grid_height, canvas_width, grid):
-   stddraw.clear(Color(192, 192, 192))
+   stddraw.clear(Color(187, 182, 165))
 
    current_dir = os.path.dirname(os.path.realpath(__file__))
    img_file = current_dir + "/images/menu_image.png"
@@ -172,29 +174,29 @@ def display_speed_menu(grid_height, canvas_width, grid):
    button_blc_x, button_blc_y = img_center_x - button_w / 2, 16
 
    # Slow button
-   stddraw.setPenColor(Color(25, 255, 228))
+   stddraw.setPenColor(Color(238,228,218))
    stddraw.filledRectangle(button_blc_x, 1, button_w, button_h)
    stddraw.setFontFamily("Arial")
    stddraw.setFontSize(25)
-   stddraw.setPenColor(Color(31, 160, 239))
+   stddraw.setPenColor(Color(160, 109, 130))
    text_to_display = "Slow"
    stddraw.text(img_center_x, 2, text_to_display)
 
    # Medium button
-   stddraw.setPenColor(Color(25, 255, 228))
+   stddraw.setPenColor(Color(238,228,218))
    stddraw.filledRectangle(button_blc_x, 4, button_w, button_h)
    stddraw.setFontFamily("Arial")
    stddraw.setFontSize(25)
-   stddraw.setPenColor(Color(31, 160, 239))
+   stddraw.setPenColor(Color(160, 109, 130))
    text_to_display = "Medium"
    stddraw.text(img_center_x, 5, text_to_display)
 
    # Fast button
-   stddraw.setPenColor(Color(25, 255, 228))
+   stddraw.setPenColor(Color(238,228,218))
    stddraw.filledRectangle(button_blc_x, 7, button_w, button_h)
    stddraw.setFontFamily("Arial")
    stddraw.setFontSize(25)
-   stddraw.setPenColor(Color(31, 160, 239))
+   stddraw.setPenColor(Color(160, 109, 130))
    text_to_display = "Fast"
    stddraw.text(img_center_x, 8, text_to_display)
 
