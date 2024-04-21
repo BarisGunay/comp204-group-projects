@@ -81,7 +81,7 @@ class GameGrid:
       # Set the font size for the score display
       stddraw.setFontSize(65)
       # Draw the score on the right panel
-      stddraw.text(self.grid_width + self.right_panel_width // 2 + 0.2, self.grid_height - 2.5, "Score: ")
+      stddraw.text(self.grid_width + self.right_panel_width // 2, self.grid_height - 2.5, "SCORE")
       # Draw the actual score value below the "Score: " text
       stddraw.setFontSize(50)
       stddraw.text(self.grid_width + self.right_panel_width // 2, self.grid_height - 4, str(self.score))
@@ -95,6 +95,8 @@ class GameGrid:
       # Draw instructions to rotate.
       stddraw.text(self.grid_width + self.right_panel_width // 2, self.grid_height - 11.4, "Press 'SPACE'")
       stddraw.text(self.grid_width + self.right_panel_width // 2, self.grid_height - 12.1, "to rotate piece")
+      # Draw next piece text.
+      stddraw.text(self.grid_width + self.right_panel_width // 2, self.grid_height - 14, "NEXT PIECE")
 
    # A method to draw the right panel.
    def draw_right_panel(self):
