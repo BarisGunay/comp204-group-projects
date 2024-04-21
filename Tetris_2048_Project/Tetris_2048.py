@@ -86,9 +86,11 @@ def start(startup):
          game_over = grid.update_grid(tiles, pos)
          game_win = grid.win
          # end the main game loop if the game is over
+         # show victory message if game is won
          if game_over and game_win:
             display_gameover_menu(grid_h, grid_w, "You won the game!", grid.score)
             break
+         # show lose mesage if game is lost
          elif game_over and not game_win:
             display_gameover_menu(grid_h, grid_w, "Game over, you lost!", grid.score)
             break
@@ -102,9 +104,6 @@ def start(startup):
 
       # display the game grid with the current tetromino
       grid.display(next_tetro)
-
-   # print a message on the console when the game is over
-   print("Game over")
 
 # A function for creating random shaped tetrominoes to enter the game grid
 def create_tetromino():
@@ -161,19 +160,24 @@ def display_game_menu(grid_height, grid_width):
             if mouse_y >= button_blc_y and mouse_y <= button_blc_y + button_h:
                break  # break the loop to end the method and start the game
 
+# A function for displaying a simple menu for game speed selection
 def display_speed_menu(grid_height, canvas_width, grid):
+   # Adjust colors for speed menu screen
    stddraw.clear(Color(187, 182, 165))
 
+   # Showing game title image
    current_dir = os.path.dirname(os.path.realpath(__file__))
    img_file = current_dir + "/images/menu_image.png"
    img_center_x, img_center_y = (canvas_width - 1) / 2, grid_height - 7
    image_to_display = Picture(img_file)
    stddraw.picture(image_to_display, img_center_x, img_center_y)
 
+   # Creating general button dimensions
    button_w, button_h = canvas_width - 1.5, 2
-   button_blc_x, button_blc_y = img_center_x - button_w / 2, 16
+   # Creating general button horizontal position
+   button_blc_x = img_center_x - button_w / 2
 
-   # Slow button
+   # "Slow" button creation with given dimensions, positions, and text
    stddraw.setPenColor(Color(238,228,218))
    stddraw.filledRectangle(button_blc_x, 1, button_w, button_h)
    stddraw.setFontFamily("Arial")
@@ -182,7 +186,7 @@ def display_speed_menu(grid_height, canvas_width, grid):
    text_to_display = "Slow"
    stddraw.text(img_center_x, 2, text_to_display)
 
-   # Medium button
+   # "Medium" button creation with given dimensions, positions, and text
    stddraw.setPenColor(Color(238,228,218))
    stddraw.filledRectangle(button_blc_x, 4, button_w, button_h)
    stddraw.setFontFamily("Arial")
@@ -191,7 +195,7 @@ def display_speed_menu(grid_height, canvas_width, grid):
    text_to_display = "Medium"
    stddraw.text(img_center_x, 5, text_to_display)
 
-   # Fast button
+   # "Fast" button creation with given dimensions, positions, and text
    stddraw.setPenColor(Color(238,228,218))
    stddraw.filledRectangle(button_blc_x, 7, button_w, button_h)
    stddraw.setFontFamily("Arial")
@@ -201,25 +205,26 @@ def display_speed_menu(grid_height, canvas_width, grid):
    stddraw.text(img_center_x, 8, text_to_display)
 
    while True:
+      # display the menu and wait for a short time (50 ms)
       stddraw.show(50)
+      # check if the mouse has been left-clicked on a button
       if stddraw.mousePressed():
+         # set mouse click positions
          mouse_x, mouse_y = stddraw.mouseX(), stddraw.mouseY()
-
          # Check if mouse click is on the Slow button
          if button_blc_x <= mouse_x <= button_blc_x + button_w and 1 <= mouse_y <= 1 + button_h:
             grid.set_speed(275)
             break
-
          # Check if mouse click is on the Medium button
          elif button_blc_x <= mouse_x <= button_blc_x + button_w and 4 <= mouse_y <= 4 + button_h:
             grid.set_speed(175)
             break
-
          # Check if mouse click is on the Fast button
          elif button_blc_x <= mouse_x <= button_blc_x + button_w and 7 <= mouse_y <= 7 + button_h:
             grid.set_speed(100)
             break
 
+# A function for displaying a simple pause menu
 def display_pause_menu(grid_height, grid_width):
    # the colors used for the menu
    background_color = Color(42, 69, 99)
@@ -244,8 +249,6 @@ def display_pause_menu(grid_height, grid_width):
    stddraw.setPenColor(button_color)
    stddraw.filledRectangle(button_blc_x + 3, button_blc_y + 3, button_w, button_h)
    # add the text on the back to menu game button
-   stddraw.setFontFamily("Arial")
-   stddraw.setFontSize(25)
    stddraw.setPenColor(text_color)
    text_to_display = "Back to Main Menu"
    stddraw.text(8, 8, text_to_display)
@@ -257,20 +260,22 @@ def display_pause_menu(grid_height, grid_width):
    while True:
       # display the menu and wait for a short time (50 ms)
       stddraw.show(50)
-      # check if the mouse has been left-clicked on the start game button
+      # check if the mouse has been left-clicked on a button
       if stddraw.mousePressed():
          # get the coordinates of the most recent location at which the mouse
          # has been left-clicked
          mouse_x, mouse_y = stddraw.mouseX(), stddraw.mouseY()
-         # check if these coordinates are inside the button
+         # check if these coordinates are inside the button (Continue)
          if mouse_x >= button_blc_x + 3 and mouse_x <= button_blc_x + button_w + 3:
             if mouse_y >= button_blc_y and mouse_y <= button_blc_y + button_h:
                break  # break the loop to end the method and start the game
+         # check if these coordinates are inside the button (Back to main menu)
          if mouse_x >= button_blc_x + 3 and mouse_x <= button_blc_x + button_w + 3:
             if mouse_y >= button_blc_y + 3 and mouse_y <= button_blc_y + 3 + button_h:
                start(False)
-            
-def display_gameover_menu(grid_height, grid_width, message, score):
+
+# A method for displaying a simple game over menu with different messages depending on win/lose        
+def display_gameover_menu(grid_height, grid_width, message, final_score):
    # the colors used for the menu
    background_color = Color(42, 69, 99)
    button_color = Color(25, 255, 228)
@@ -285,7 +290,6 @@ def display_gameover_menu(grid_height, grid_width, message, score):
    stddraw.setPenColor(button_color)
    stddraw.filledRectangle(button_blc_x + 3, button_blc_y, button_w, button_h)
    # add the text on the quit game button
-   stddraw.setFontFamily("Arial")
    stddraw.setFontSize(25)
    stddraw.setPenColor(text_color)
    text_to_display = "Exit Game"
@@ -294,8 +298,6 @@ def display_gameover_menu(grid_height, grid_width, message, score):
    stddraw.setPenColor(button_color)
    stddraw.filledRectangle(button_blc_x + 3, button_blc_y + 3, button_w, button_h)
    # add the text on the back to menu game button
-   stddraw.setFontFamily("Arial")
-   stddraw.setFontSize(25)
    stddraw.setPenColor(text_color)
    text_to_display = "Return to Main Menu"
    stddraw.text(8, 8, text_to_display)
@@ -303,17 +305,15 @@ def display_gameover_menu(grid_height, grid_width, message, score):
    stddraw.setFontSize(50)
    text_to_display = message
    stddraw.text(8, 15, text_to_display)
-   # add the score
-   stddraw.setFontFamily("Arial")
+   # add the final score
    stddraw.setFontSize(35)
-   stddraw.setPenColor(text_color)
-   text_to_display = "Score: " + str(score)
+   text_to_display = "Score: " + str(final_score)
    stddraw.text(8, 13, text_to_display)
    # check if the mouse has been left-clicked on the continue game button
    while True:
       # display the menu and wait for a short time (50 ms)
       stddraw.show(50)
-      # check if the mouse has been left-clicked on the start game button
+      # check if the mouse has been left-clicked on a button
       if stddraw.mousePressed():
          # get the coordinates of the most recent location at which the mouse
          # has been left-clicked

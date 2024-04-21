@@ -28,11 +28,11 @@ class GameGrid:
       self.line_thickness = 0.002
       self.box_thickness = 10 * self.line_thickness
 
+      # attributes that game menus use
       # initialize the score to 0
       self.score = 0
       # initialize the game as not won
       self.win = False
-      
       # initialize speed
       self.speed = 250 # default
 
@@ -73,6 +73,7 @@ class GameGrid:
       
       stddraw.setPenRadius()
 
+   # A method for drawing the score, and other textual elements into the right panel.
    def draw_score(self):
       # Set the color for the score display
       stddraw.setPenColor(Color(160, 109, 130))
@@ -95,9 +96,7 @@ class GameGrid:
       stddraw.text(self.grid_width + self.right_panel_width // 2, self.grid_height - 11.4, "Press 'SPACE'")
       stddraw.text(self.grid_width + self.right_panel_width // 2, self.grid_height - 12.1, "to rotate piece")
 
-   def update_score(self, points):
-      self.score += points
-
+   # A method to draw the right panel.
    def draw_right_panel(self):
       # Set the pen color and thickness for the right-side panel
       stddraw.setPenColor(self.line_color)
@@ -175,47 +174,56 @@ class GameGrid:
       # we remove the full rows from the grid thanks to this for loop
       for row in rows_to_clear:
          # update the score with the values of each tile.
-         self.score += sum([tile.number for tile in self.tile_matrix[row] if tile is not None])
+         self.score += sum([tile.number for tile in self.tile_matrix[row] if tile is not None]) # SCORE UPDATE
          self.tile_matrix = np.delete(self.tile_matrix, row, axis=0)
          # add a new empty row at the top of the grid
          new_row = np.full((1, self.grid_width), None)
          self.tile_matrix = np.concatenate((self.tile_matrix, new_row), axis=0)#This effectively adds the new row to the top of the grid,
-                                                #shifting all existing rows down by one position.
+                                                                               #shifting all existing rows down by one position.
 
-         
    def merge_tiles(self):
+      # Set merged to True to start the loop
       merged = True
+      # Start a loop which continues as long as merged is True
       while merged:
-         merged = False
-    # Iterate over each cell in the grid
+         merged = False # Reset merged to False at the beginning of each loop iteration
+
+         # Iterate over each cell in the grid
          for row in range(self.grid_height):
             for col in range(self.grid_width):
-                  current_tile = self.tile_matrix[row][col]
-               # Skip empty cells
+                  current_tile = self.tile_matrix[row][col] # Get the current tile at this position
+                  # Skip empty cells
                   if current_tile is None:
                      continue
-            # Check if there is a neighboring tile with the same value
-            # and merge them
+                  # Check if there is a neighboring tile with the same value
+                  # and merge them
                   if row + 1 < self.grid_height and self.tile_matrix[row + 1][col] is not None and self.tile_matrix[row][col] is not None:
+                     # Check if the current tile has the same value as the one below it
                      if current_tile.number == self.tile_matrix[row + 1][col].number:
-                        current_tile.number *= 2
-                        self.score += current_tile.number
-                        self.tile_matrix[row + 1][col] = None
-                        self.tile_matrix[row ][col].change_color()
-                        merged = True
+                        # If they have the same value, merge them
+                        current_tile.number *= 2 # Double the value of the current tile
+                        # Update the score with the new value
+                        self.score += current_tile.number # SCORE UPDATE
+                        self.tile_matrix[row + 1][col] = None # Remove the tile below
+                        self.tile_matrix[row ][col].change_color()  # Change the color of the merged tile
+                        merged = True # Set merged to True since a merge happened
+
+                        # Additional merging logic for tiles that are farther away
                         if row + 2 < self.grid_height and self.tile_matrix[row + 2][col] is not None:
-                           if self.tile_matrix[row + 1][col] == None: 
+                           # If the tile two cells below is not empty
+                           if self.tile_matrix[row + 1][col] is None:
+                              # Move it up
                               self.tile_matrix[row + 1][col] = self.tile_matrix[row + 2][col]
                               self.tile_matrix[row + 2][col] = None
                               merged = True
                         if row + 3 < self.grid_height and self.tile_matrix[row + 3][col] is not None:
-                           if self.tile_matrix[row + 2][col] == None: 
+                           # If the tile three cells below is not empty
+                           if self.tile_matrix[row + 2][col] is None:
+                              # Move it up
                               self.tile_matrix[row + 2][col] = self.tile_matrix[row + 3][col]
                               self.tile_matrix[row + 3][col] = None 
                               merged = True
-      
-
-                                                          
+                                                
    # A method that locks the tiles of a landed tetromino on the grid checking
    # if the game is over due to having any tile above the topmost grid row.
    # (This method returns True when the game is over and False otherwise.)
